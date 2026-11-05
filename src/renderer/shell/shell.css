@@ -1,0 +1,359 @@
+html,
+body,
+#root {
+  background: var(--strip);
+}
+
+.strip {
+  display: flex;
+  align-items: flex-end;
+  height: 42px;
+  padding-left: 8px;
+  background: linear-gradient(180deg, #0d0e13, var(--strip));
+  -webkit-app-region: drag;
+  user-select: none;
+  position: relative;
+}
+.strip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+  z-index: 0;
+}
+
+.brand {
+  -webkit-app-region: no-drag;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin: 0 6px 4px 0;
+  border-radius: 9px;
+  transition: background 0.2s;
+}
+.brand:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.brand:active {
+  transform: scale(0.92);
+}
+.brand {
+  position: relative;
+  transition:
+    background 0.2s,
+    transform 0.2s var(--ease);
+}
+/* The logo is the Settings button: a small gear slides in on hover. */
+.brand-gear {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  display: grid;
+  place-items: center;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #1a1d25;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-2);
+  opacity: 0;
+  transform: scale(0.5) rotate(-90deg);
+  transition:
+    opacity 0.18s,
+    transform 0.3s var(--ease);
+}
+.brand:hover .brand-gear {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+.brand:hover .brand-gear svg {
+  animation: gear-spin 2.4s linear infinite;
+}
+@keyframes gear-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 0;
+  position: relative;
+  z-index: 1;
+}
+
+.tab {
+  -webkit-app-region: no-drag;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  min-width: 48px;
+  max-width: 220px;
+  flex: 1 1 200px;
+  container-type: inline-size;
+  padding: 0 8px 0 11px;
+  border-radius: 10px 10px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  cursor: default;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    transform 0.22s var(--ease);
+  animation: tab-in 0.28s var(--ease);
+}
+@keyframes tab-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-2);
+}
+.tab.active {
+  background: var(--bg-2);
+  color: var(--text);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset -1px 0 0 rgba(255, 255, 255, 0.04),
+    0 -6px 16px rgba(0, 0, 0, 0.25);
+}
+/* A project that is working: a slow warm sheen passes over its tab. */
+.tab.working {
+  background-image: linear-gradient(100deg, transparent 25%, rgba(var(--accent-rgb), 0.1) 45%, rgba(var(--accent-2-rgb), 0.14) 50%, transparent 70%);
+  background-size: 260% 100%;
+  animation:
+    tab-in 0.28s var(--ease),
+    tab-sheen 1.6s linear infinite;
+}
+.tab.working.active {
+  background-color: var(--bg-2);
+}
+@keyframes tab-sheen {
+  from {
+    background-position: 130% 0;
+  }
+  to {
+    background-position: -130% 0;
+  }
+}
+.tab-icon {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.tab:active:not(.dragging) {
+  transform: translateY(1px);
+}
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--bg-2);
+}
+.tab + .tab:not(.active)::after {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: var(--line-2);
+}
+.tab.active + .tab::after,
+.tab:hover + .tab::after {
+  display: none;
+}
+.tab.dragging {
+  transition: none;
+  z-index: 5;
+  background: var(--panel-2);
+  color: var(--text);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+@container (max-width: 84px) {
+  .tab-title,
+  .tab:not(.active) .tab-close {
+    display: none;
+  }
+}
+.tab-title {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tab.working .tab-title {
+  color: var(--text);
+}
+.tab-close {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  color: var(--faint);
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    color 0.15s;
+}
+.tab:hover .tab-close,
+.tab.active .tab-close {
+  opacity: 1;
+}
+.tab-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.new-tab {
+  flex: none;
+  -webkit-app-region: no-drag;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: 0 0 3px 4px;
+  border-radius: 8px;
+  color: var(--muted);
+  transition:
+    background 0.15s,
+    color 0.15s,
+    transform 0.2s var(--ease);
+}
+.new-tab:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+.new-tab:not(:disabled):active {
+  transform: scale(0.9);
+}
+.new-tab:disabled {
+  opacity: 0.3;
+}
+
+.drag-fill {
+  flex: 0 0 56px;
+  min-width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.strip-notice {
+  position: absolute;
+  right: 320px;
+  top: 8px;
+  z-index: 10;
+  max-width: 46%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  background: #1d1a10 !important;
+  font-size: 12px;
+  color: var(--warn);
+  background: rgba(255, 198, 92, 0.08);
+  border: 1px solid rgba(255, 198, 92, 0.25);
+  padding: 3px 10px;
+  border-radius: 999px;
+  animation: fade-up 0.25s var(--ease);
+  white-space: nowrap;
+}
+
+.strip-chip {
+  -webkit-app-region: no-drag;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.strip-chip:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: var(--panel-2);
+}
+.acct-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 8px rgba(61, 220, 151, 0.6);
+}
+.account.warn .acct-dot {
+  background: var(--warn);
+  box-shadow: 0 0 8px rgba(255, 198, 92, 0.6);
+}
+.account.bad .acct-dot {
+  background: var(--err);
+  box-shadow: 0 0 8px rgba(255, 95, 109, 0.6);
+}
+.acct-name {
+  color: var(--text);
+  font-weight: 500;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.acct-window {
+  color: var(--faint);
+}
+.acct-meter {
+  width: 42px;
+  height: 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.acct-meter span {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--ok), #7ee0b5);
+  transition: width 0.6s var(--ease);
+}
+.account.warn .acct-meter span {
+  background: linear-gradient(90deg, var(--warn), var(--accent));
+}
+.account.bad .acct-meter span {
+  background: var(--err);
+}
+.acct-pct {
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+/* Room for the Windows caption buttons (title bar overlay). */
+.caption-space {
+  width: 148px;
+  flex: none;
+}

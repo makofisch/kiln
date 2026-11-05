@@ -1,0 +1,30 @@
+# Dependencies and build output
+node_modules/
+out/
+dist/
+Versions/
+*.zip
+
+# Local data: never commit projects, logs, logins or settings
+workspace/
+kiln.config.json
+*.log
+.env
+.env.*
+
+# Python and Blender
+__pycache__/
+*.pyc
+*.blend1
+*.blend2
+
+# Editors and the OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Tool caches
+.cache/

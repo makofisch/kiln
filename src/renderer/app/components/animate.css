@@ -1,0 +1,368 @@
+/* The Animate panel: a dock along the bottom of the viewer when the scene has a rig. */
+.anim-dock {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px 9px;
+  border-radius: var(--radius);
+  animation: fade-up 0.3s var(--ease);
+  font-size: 12.5px;
+}
+.anim-dock.collapsed {
+  left: auto;
+  right: 14px;
+  padding: 4px;
+}
+.stage.has-anim .outliner {
+  bottom: 138px;
+}
+.stage.has-anim .selection-chip {
+  bottom: 140px;
+}
+.stage.has-anim.anim-collapsed .outliner {
+  bottom: 14px;
+}
+.stage.has-anim.anim-collapsed .selection-chip {
+  bottom: 16px;
+}
+
+.anim-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.anim-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+.anim-title .muted {
+  font-weight: 400;
+  font-size: 11.5px;
+}
+.anim-clips {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding: 1px;
+}
+.anim-empty {
+  font-size: 12px;
+  align-self: center;
+}
+.anim-clip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--text-2);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+.anim-clip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+.anim-clip.on {
+  color: #fff;
+  background: var(--accent-soft);
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+.anim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  color: var(--text-2);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  position: relative;
+}
+.anim-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+.anim-btn.on {
+  color: #fff;
+  background: var(--accent-soft);
+  border-color: rgba(var(--accent-rgb), 0.5);
+}
+.anim-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.anim-btn.icon {
+  padding: 4px 6px;
+}
+.anim-btn.play {
+  color: #fff;
+  background: rgba(var(--accent-rgb), 0.22);
+  border-color: rgba(var(--accent-rgb), 0.5);
+}
+.anim-btn.primary {
+  color: #fff;
+  background: rgba(var(--accent-rgb), 0.3);
+  border-color: rgba(var(--accent-rgb), 0.6);
+}
+.anim-btn.danger:hover:not(:disabled) {
+  color: #ff8a8a;
+}
+.anim-btn.studio {
+  color: #cfe0ff;
+  background: rgba(58, 110, 220, 0.2);
+  border-color: rgba(140, 180, 255, 0.35);
+}
+.anim-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+}
+.anim-select {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 3px 6px;
+  font: inherit;
+  font-size: 12px;
+}
+.anim-time {
+  font: 11.5px var(--mono);
+  color: var(--text-2);
+  white-space: nowrap;
+  min-width: 128px;
+}
+.anim-busy {
+  font-size: 12px;
+  color: var(--accent-2);
+  white-space: nowrap;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.anim-timeline {
+  position: relative;
+  flex: 1;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--line);
+  cursor: ew-resize;
+  touch-action: none;
+  overflow: hidden;
+}
+.anim-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+.anim-tick em {
+  position: absolute;
+  bottom: 1px;
+  left: 3px;
+  font: 9px var(--mono);
+  font-style: normal;
+  color: var(--faint);
+}
+.anim-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: #ff6b5c;
+  pointer-events: none;
+}
+.anim-marker.step {
+  top: auto;
+  height: 6px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.28);
+}
+.anim-marker b {
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  font: 600 9.5px var(--mono);
+  color: #ff8f84;
+  white-space: nowrap;
+}
+.anim-playhead {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--accent-2);
+  box-shadow: 0 0 8px var(--accent-glow);
+  pointer-events: none;
+}
+
+.anim-menu-wrap {
+  position: relative;
+}
+.anim-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  min-width: 210px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 6px;
+  border-radius: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+.anim-menu-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  padding: 6px 8px 3px;
+}
+.anim-menu-group + .anim-menu-group {
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+}
+.anim-range {
+  margin: 4px 8px 6px;
+  accent-color: var(--accent);
+}
+
+.anim-drawer {
+  border-top: 1px solid var(--line);
+  padding-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.anim-drawer-title {
+  font-weight: 600;
+  color: var(--text);
+}
+.anim-drawer-title .muted {
+  font-weight: 400;
+}
+.anim-drawer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.anim-drawer-row .grow {
+  flex: 1;
+}
+.anim-sliders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 6px 16px;
+}
+.anim-slider {
+  display: grid;
+  grid-template-columns: 96px 1fr 52px;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+}
+.anim-slider input[type='range'] {
+  accent-color: var(--accent);
+  width: 100%;
+}
+.anim-slider em {
+  font: 11px var(--mono);
+  font-style: normal;
+  color: var(--muted);
+  text-align: right;
+}
+.anim-slider.changed span,
+.anim-slider.changed em {
+  color: var(--accent-2);
+}
+.anim-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+}
+.anim-check input {
+  accent-color: var(--accent);
+}
+.anim-issues {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--text-2);
+}
+.anim-issues.warn li::marker {
+  color: var(--accent-2);
+}
+.anim-issues button {
+  color: inherit;
+  text-align: left;
+  text-decoration: underline dotted rgba(255, 255, 255, 0.3);
+}
+.anim-issues button:hover {
+  color: var(--text);
+}
+.anim-joints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.anim-joint {
+  font: 11px var(--mono);
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: var(--text-2);
+}
+.anim-joint.hinge {
+  border-color: rgba(120, 180, 255, 0.35);
+}
+.anim-joint.ball {
+  border-color: rgba(var(--accent-rgb), 0.35);
+}
+.anim-joint.fixed {
+  opacity: 0.6;
+}
+
+@media (max-width: 760px) {
+  .anim-time {
+    min-width: 0;
+  }
+  .anim-tools .anim-btn span {
+    display: none;
+  }
+}

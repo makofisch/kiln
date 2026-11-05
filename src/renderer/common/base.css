@@ -1,0 +1,297 @@
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:root {
+  --bg: #0a0b0e;
+  --bg-2: #0e1015;
+  --strip: #0b0c10;
+  --panel: #111318;
+  --panel-2: #161920;
+  --panel-3: #1c2029;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-2: rgba(255, 255, 255, 0.12);
+  --text: #e9ebf1;
+  --text-2: #c3c7d2;
+  --muted: #8a8f9e;
+  --faint: #5d6272;
+  --accent: #ff7a2f;
+  --accent-2: #ffb454;
+  --accent-soft: rgba(255, 122, 47, 0.14);
+  --accent-glow: rgba(255, 122, 47, 0.38);
+  --accent-rgb: 255, 122, 47;
+  --accent-2-rgb: 255, 180, 84;
+  --chat-zoom: 1;
+  --violet: #a48bff;
+  --violet-soft: rgba(164, 139, 255, 0.12);
+  --ok: #3ddc97;
+  --warn: #ffc65c;
+  --err: #ff5f6d;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --font: 'Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', 'Inter', system-ui, sans-serif;
+  --mono: 'Cascadia Code', 'Cascadia Mono', 'JetBrains Mono', Consolas, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.55 var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.35);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- the Kiln mark ---------- */
+
+.kiln-mark {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+.kiln-mark.glow {
+  filter: drop-shadow(0 0 7px rgba(255, 122, 47, 0.45));
+}
+.kiln-mark path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.kiln-mark.working .km-top {
+  animation: km-face 1.25s ease-in-out infinite;
+}
+.kiln-mark.working .km-right {
+  animation: km-face 1.25s ease-in-out infinite 0.4166s;
+}
+.kiln-mark.working .km-left {
+  animation: km-face 1.25s ease-in-out infinite 0.8333s;
+}
+.kiln-mark.working .km-core {
+  animation: km-core 1.25s ease-in-out infinite;
+}
+.kiln-mark.working {
+  animation: km-glow 1.25s ease-in-out infinite;
+}
+@keyframes km-face {
+  0%,
+  100% {
+    opacity: 0.42;
+  }
+  28% {
+    opacity: 1;
+    filter: brightness(1.28);
+  }
+  60% {
+    opacity: 0.6;
+  }
+}
+@keyframes km-core {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.72);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+@keyframes km-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(255, 122, 47, 0.25));
+  }
+  45% {
+    filter: drop-shadow(0 0 7px rgba(255, 150, 70, 0.7));
+  }
+}
+
+/* ---------- shared animation ---------- */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0);
+  }
+}
+@keyframes rotate-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.glass {
+  background: rgba(17, 19, 24, 0.72);
+  border: 1px solid var(--line-2);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, var(--muted) 0%, var(--text) 45%, var(--muted) 90%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1.8s linear infinite;
+}
+
+.chev {
+  transition: transform 0.25s var(--ease);
+  color: var(--muted);
+}
+.chev.open {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- the pixel mark (working indicator) ---------- */
+.pixel-mark {
+  display: block;
+  flex: none;
+  image-rendering: pixelated;
+}
+.pixel-mark.working {
+  filter: drop-shadow(0 0 5px rgba(255, 122, 47, 0.45));
+}
+.live-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+
+
+/* Settings → Appearance → Reduce motion */
+html[data-reduce-motion] *,
+html[data-reduce-motion] *::before,
+html[data-reduce-motion] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
