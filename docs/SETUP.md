@@ -28,9 +28,12 @@ Keep the suggested folder or pick another. The installer adds Kiln to the Start 
 
 ### 3. Sign in to Claude
 
-<!-- Kiln 0.9: one Claude login, the same as Shuriken's (this PC's Claude Code login). Signing in happens in Claude Code itself (claude /login); Settings → Claude login shows whether it is signed in. -->
+Kiln uses this PC's Claude Code login, the same one Shuriken Studio uses by default. It has no sign-in of its own and never sees your password.
 
-TODO: copy (written separately).
+- **Have Shuriken Studio?** Sign in there: Settings → Claude login → This PC's Claude login → **Sign in**.
+- **Otherwise** install Claude Code (https://code.claude.com/docs/en/setup), open a terminal, run `claude` and follow the sign-in prompts.
+
+Then click the Kiln logo (or press **Ctrl+,**) and open **Claude login**: it shows your email and plan. If it still says Not signed in, press **Check again**.
 
 ### 4. Make your first model
 
@@ -56,11 +59,15 @@ The installer isn't code-signed yet. Choose More info, then Run anyway.
 
 **The chat says "Blender not found"**
 
-Install Blender 5.2 in its default folder and restart Kiln. Installed somewhere else? Put its path in %APPDATA%\Kiln\kiln.config.json as { "blender": "D:/Apps/Blender/blender.exe" }.
+Install Blender 5.2 in its default folder: Kiln finds it within a few seconds, with no restart. Installed somewhere else? Put its path in %APPDATA%\Kiln\kiln.config.json as { "blender": "D:/Apps/Blender/blender.exe" }.
 
 **"Not signed in" or a limit reached**
 
-TODO: copy (written separately).
+Kiln logo → Claude login shows whether this PC's Claude Code login is signed in, and its 5-hour and weekly usage. Not signed in? Sign in as in step 3, then press Check again. At a limit, the copilot stops and says so: wait for the reset.
+
+**How do I delete a project?**
+
+Press the trash icon on its card on the start page, or use All projects, a tab's right-click menu, or Settings → Data & logs. It moves to Documents\Kiln\.trash.
 
 **Where are my models?**
 
@@ -68,7 +75,7 @@ In Documents\Kiln, one folder per project. Settings, logs and what the copilot r
 
 **How do updates work?**
 
-TODO: copy (written separately). Kiln no longer updates itself: download each new version fresh.
+Kiln doesn't update itself. Download the newest installer from https://shuriken.studio/apps/kiln (or this repository's Releases) and run it over the one you have: your projects and settings stay.
 
 **How do I uninstall it?**
 

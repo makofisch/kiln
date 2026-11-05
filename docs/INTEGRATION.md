@@ -238,14 +238,18 @@ has a `zfight` check (see "No z-fighting" below).
 
 ### No z-fighting (0.9)
 
-<!-- TODO: copy (written separately): why the gap is what it is, and what the copilot does about it. -->
+Two surfaces that overlap and face the same way flicker when the screen's depth buffer can't tell them apart, so they need a safe gap. Its size is set by the weakest screen the model will be shown on. Roblox on PC and iOS uses a reversed-Z floating-point depth buffer, where 0.02 studs never flickers. Android phones are the weak case: a 24-bit depth buffer and Roblox's 0.1-stud near plane, where one depth step is about 0.0015 studs at 50 studs away and 0.024 at 200. With a 4× margin, 0.02 studs holds to about 90 studs, roughly as far as a small detail still covers a few pixels on a phone. Big layers, such as a road or a sign, stay visible further away, so their gap grows with their width, up to a cap. Other projects target desktop engines and Kiln's own viewer, which have far more depth precision, so 2 mm is enough.
+
+The copilot avoids z-fighting while it builds: it insets or extrudes details into the surface, merges parts and deletes the hidden face, or keeps layers at least the gap apart. In Roblox projects it also knows the export merges parts by material, so flush faces of merged parts flicker too. It reads the automatic check after every script, can call `kiln.zfight(objs, fix=True)`, `check` with `fix: true` or `kiln.zfight_rule()`, and is sent back once at the end of a turn to fix what's left.
 
 The contract:
 
 - `zfight_rule` (in `POST check` and in `python`'s automatic check): `{ gap, per_width, cap, flush, units, roblox }`,
   the safe distance between two overlapping surfaces that face the same way, in the project's units. Roblox
-  projects: `gap` 0.02 studs, plus `per_width` (0.4%) of the layer's width, at most `cap` 0.1 studs. Other
-  projects: 2 mm, plus 0.2% of the width, at most 1 cm.
+  projects: `gap` 0.02 studs, or `per_width` (0.4%) of the layer's width when that is larger, at most `cap`
+  0.1 studs. Other projects: 2 mm, or 0.2% of the width when larger, at most 1 cm. A layer's width is the square
+  root of the area where the two surfaces overlap, and the gap is never more than a tenth of it (or twice
+  `flush`, when that is larger).
 - Where it is checked: after every `python` / `run_python` change (scenes under 400k triangles), in
   `kiln.game_ready`, in `kiln.zfight(objs=None, fix=False)`, in `POST check`, and once more when a turn that
   changed the scene ends: if any pair is left, the copilot is sent back once, in the same turn, to fix it.
